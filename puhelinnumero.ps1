@@ -3,6 +3,7 @@
 
 $sis = import-csv -Path "C:\Temp\numerot.csv" -Encoding UTF8
 
+
 class aztilit{
     $id
     $studentanimi
@@ -15,6 +16,7 @@ class aztilit{
 
 
 #https://stackoverflow.com/questions/62737875/powershell-replace-special-characters-like-%C3%BC
+#lahde talle funktiolle
 
 function Replace-Diacritics {
     Param(
@@ -43,6 +45,9 @@ class tiedot {
     
 }
 
+#listaa numerot.csv sisallon perusteella. tietojen oltava muodossa:
+#nimi,puhelinumero
+#"sukunimi,etunimet",numero
 function listaa{
 
         $kaikki = @()
@@ -62,6 +67,10 @@ function listaa{
         return $kaikki
 }
 
+#tarkistaa onko puhelinnumerot oikein tiedoissa
+#merkitsee virheelliset numerot
+#muuttaa numerot +358 muotoon
+#jos numero ei ole skriptiin kirjatun standardin mukainen numeroa ei muutella ja se merkitaan, etta se erottuu
 function numero_oikein{
         param($numero)
 
@@ -71,7 +80,7 @@ function numero_oikein{
         }
 
         if($numero -match '[\d]'){
-            #sisÃ¤ltÃ¤Ã¤ numeron
+            #sisaltaa numeron
             #voi jatkua
             
         }else{
@@ -80,15 +89,15 @@ function numero_oikein{
         
         
         $korjattu = $numero -replace ' ','' -replace '-',''
-        #ota ylimÃ¤Ã¤rÃ¤iset pois
+        #ota ylimaaraiset pois
 
         if($korjattu[0] -eq "0"){$korjattu = $korjattu.substring(1,$korjattu.Length-1)}
-        #onko ensimmÃ¤inen kirjain 0? jos on niin se otetaan pois
+        #onko ensimmainen kirjain 0? jos on niin se otetaan pois
         
         if(($korjattu.Length -eq 9) -and ($korjattu.substring(0,4)-ne "+358")){$korjattu = "+358"+$korjattu}
-        #onko 9 merkkiÃ¤ pitkÃ¤? EikÃ¤ ole +358 alussa? sitten lisÃ¤tÃ¤Ã¤n +358
+        #onko 9 merkkia pitka? EikÃ¤ ole +358 alussa? sitten lisataann +358
 
-        #puhelinnumero on 9 merkkiÃ¤ pitkÃ¤, jos ei lasketa ensimmÃ¤istÃ¤ 0
+        #puhelinnumero on 9 merkkiÃ¤ pitkÃ¤, jos ei lasketa ensimmaisesta 0
         #jos on normaalissa muodossa eli ei ole +jotain
         #ja ei ole teksti
 
@@ -96,14 +105,10 @@ function numero_oikein{
 
         if($korjattu.Substring(0,1)-like "+" -and $korjattu.Substring(1,4)-ne"358" -and $korjattu.Length -eq 13 ){
             $korjattu ="+358"+ $korjattu.Substring(4,$korjattu.Length-4)
-        #alkaako +? ja ei ole 358 sen jÃ¤lkeen? ja on 13 merkkiÃ¤ pitkÃ¤? sitten ensimmÃ¤iset 4 merkkiÃ¤ vaihdetaan +358
+        #alkaako +? ja ei ole 358 sen jalkeen? ja on 13 merkkia pitka? sitten ensimmaiset 4 merkkia vaihdetaan +358
         }
 
 
-        #jos alkaa +358
-        #niin on oikein ja ei tarvitse tehdÃ¤ mitÃ¤Ã¤n?
-        
-        #jos tyhjÃ¤
        
 
         
@@ -112,8 +117,8 @@ function numero_oikein{
         ##
         #onko numero
         #+358 alkuinen
-        #13 merkkiÃ¤ pitkÃ¤
-        #ei sisÃ¤llÃ¤ 0 +358 jÃ¤lkeen
+        #13 merkkia
+        #ei sisalla 0 +358 jÃ¤lkeen
         if ($korjattu -like "+358*" -and $korjattu.Substring(4, 1) -ne '0' -and $korjattu.Length -eq 13) {
             return $korjattu
         }else{return "Virheellinen_numero:"+ $korjattu
@@ -129,6 +134,7 @@ function numero_oikein{
         #return $korjattu
 
     }
+    #kay lapi listan ja tekee korjaukset
 function korjaanumero{ 
 
 
@@ -144,6 +150,7 @@ function korjaanumero{
         return $lista11
 }
 
+#skriptin rakennusvaiheen ratkaisu. muuten skripti paivittaisi tiedot turhaan jokakerta kun sita testaa.
 if($null -eq $lista0){$lista0 = listaa}
 if($null -eq $lista1){$lista1 = korjaanumero}
 
@@ -156,7 +163,9 @@ if($null -eq $lista1){$lista1 = korjaanumero}
 
 
 
-
+#halusin tehda nopeasti funktion ja kaytin lyhyita nimia
+#funktio yhdistaa etu ja sukunimen yhdeksi, laittaen valiin pisteen.
+#jos etunimia onkin monta, funktio ottaa arrayn ensimmaisen nimen
 function haenimia{
     param($e,
     $s
@@ -176,7 +185,7 @@ return $aaa
 
 
 
-
+#poistaa nimilistan nimista erikoismerkit ja korvaa ne tavallisilla kirjaimilla
 function nimilista{
 $nimet = @()
 
@@ -195,7 +204,8 @@ if($null -eq $nimilista){$nimilista = nimilista}
 
 
 
-
+#azure haku, hakee tilit annetun nimen perusteella
+#jaanne, ei kaytossa
 function azhaku{
     param($nimi)
     $adtilit = @()
@@ -204,6 +214,8 @@ function azhaku{
 }
 
 
+#hakee tilit annetun hakusanalistan perusteella.
+#switch case on jaanne aiemmasta ideasta, mutta se mahdollistaa myos funktion toiminnallisuuden lisaamisen myohemmin
 function paikallinen_adhaku{
     param($moodi,$hakusanalista)
     $hakutulos=@()
@@ -236,6 +248,8 @@ function paikallinen_adhaku{
 
 
 
+#tekoaly yliherramme antoi minulle taman funktion.
+#se vertaa kahta tekstia ja antaa numeron kuinka lahella tekstit ovat toisiaan.
 
 function Get-LevenshteinDistance {
     param (
@@ -283,6 +297,8 @@ function Get-LevenshteinDistance {
     return $matrix[$sourceLength][$targetLength]
 }
 
+#luo kaikki mahdolliset yhdistelmat annetun henkilon nimista. 
+#alifunktio verrattavatili2 funktiolle
 function rakenna{
     param($etunimet, 
     $sukunimi)
@@ -294,6 +310,10 @@ function rakenna{
     return $yhdistelmat
 }
 
+
+#luo nimiyhdistelmat ad hakua varten.
+#ottaa huomioon myos valiviivat ja kasittelee ne 
+#ottaa haettavista nimista pois erikoismerkit
 
 function verrattavatili2{
     param($i)
@@ -345,6 +365,8 @@ $etunimet_korjattu = @()
 
 
 
+#tekee varsinaisen analyysin loydetyista tuloksista
+#palauttaa joko hyvintodennakoisesti oikean tilin tai "ei tuloksia"
 
 function hakuanalyysi2{
     param($id)
@@ -405,6 +427,9 @@ return "ei tuloksia"
 
 
 
+#prosessoi saadut tulokset
+#rakentaa tiedot listaan, jonka skripti lopuksi tekee
+#prosessissa voi menna pitkaan, joten skripti ilmoittaa edistymisen
 
 function prosessoi2{
 
@@ -437,6 +462,8 @@ function prosessoi2{
 #$adtunnukset = prosessoi2
 
 
+#yhdistaa tiedot studenta listasta kerattyihin tietoihin.
+#eli yhdistaa tilin ja puhelinnumeron
 
 function yhdista{
     
@@ -458,4 +485,5 @@ return $tulos
 
 $yhdistetty = yhdista
 
+#vie tiedot tulokset.csv tiedostoon. 
 $yhdistetty | Export-Csv -Path "C:\temp\tulokset.csv" -Force -NoTypeInformation -Encoding utf8
