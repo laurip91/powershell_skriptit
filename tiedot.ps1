@@ -106,7 +106,7 @@ if(Test-Path -Path $csvpolku){
             #admintilia ei saatu luotua
         }
         try {
-            Add-LocalGroupMember -group "j‰rjestelm‰nvalvojat" -member $tiedot.admintunnus
+            Add-LocalGroupMember -group "j√§rjestelm√§nvalvojat" -member $tiedot.admintunnus
         }
         catch {
             try {
