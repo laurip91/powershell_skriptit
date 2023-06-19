@@ -1,0 +1,2 @@
+etunimi;sukunimi;puhelinnumero;testaus ou;etäkirjautuja
+etunimi2;sukunimi2;puhelinnumero2;testaus ou;
