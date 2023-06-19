@@ -14,8 +14,18 @@ puhelinnumero.
 -jos skripti ei löydä sopivaa ad tiliä, kohta jätetään tyhjäksi.
 
 -skriptä voi kehittää antamaan enemmän tuloksia niille joista ei näytetä mitään, mutta virheen mahdollisuus nousee silloin ja se pitää ottaa huomioon tulosten näyttämisessä.
+-skripti osaa korvata erikosimerkit
 
--skripti osaa korvata erikoismerkit
--
+------------------------
+tunnustenluonti.ps1
+
+-tunnustenluonti skripti paikalliselle active directorylle
+-skriptistä poistettu tietoja tietoturvasyistä ja se ei voi toimia ilman muokkauksia
+
+  -manuaalinen moodi -> luo yksi tunnus manuaalisesti. skripti kysyy tarvittavat tiedot
+  -massamoodi -> lisää haluamasi tiedot tilitiedot.txt tiedostoon, samaan tapaan kuin esimerkkitiedossa. Skripti käy sen läpi ja luo automaattisesti tunnukset tietojen perusteella.
+  -hakumoodi -> tarkista onko joku tunnus olemassa ad:ssa 
+  -varmistus -> skripti ei tee mitään pysyvää ilman varmistus komentoa, vahinkojen ehkäisemiseksi
+  
 
 
