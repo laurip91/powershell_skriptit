@@ -26,6 +26,16 @@ tunnustenluonti.ps1
   -massamoodi -> lisää haluamasi tiedot tilitiedot.txt tiedostoon, samaan tapaan kuin esimerkkitiedossa. Skripti käy sen läpi ja luo automaattisesti tunnukset tietojen perusteella.
   -hakumoodi -> tarkista onko joku tunnus olemassa ad:ssa 
   -varmistus -> skripti ei tee mitään pysyvää ilman varmistus komentoa, vahinkojen ehkäisemiseksi
+
+
+  -----------------------
+
+  tiedot.ps1
+
+  luo paikallisen [admin] tunnuksen ja generoi sille salasanan
+  tallentaa tiedot koneesta ja luodusta tunnuksesta tiedot.csv tiedostoon
+
+  tietoja [poistettu] tietoturvasyistä ja skripti ei toimi oikein ilman muokkausta.
   
 
 
